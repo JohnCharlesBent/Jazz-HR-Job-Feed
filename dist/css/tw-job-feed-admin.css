@@ -1,0 +1,224 @@
+.tw-job-feed-admin__wrapper {
+  font-size: 14px;
+}
+
+.form_wrapper {
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  padding: 1rem;
+  background: #DACFB3;
+}
+
+.form_wrapper fieldset {
+
+}
+
+.form_wrapper fieldset label span.req {
+  color: red;
+  font-size: 1.2rem;
+}
+
+.form_wrapper fieldset label {
+  margin-bottom: 2rem;
+  display: block;
+  color: #353D42;
+}
+
+.form_wrapper fieldset label input[type="text"] {
+  display: block;
+  width: 100%;
+  padding: .5rem;
+  height: 35px;
+  font-size: 14px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background: #ccc;
+  border:solid thin #353D42;
+}
+
+.form_wrapper fieldset label input[value=""] {
+  background: #fff;
+  border: solid thin #353D42;
+}
+
+input[type="submit"]  {
+  padding: .5rem 1rem;
+  font-size: 18px;
+  border: solid thin transparent;
+  background: #353D42;
+  color: #fff;
+  text-transform: capitalize;
+  border-radius: 4px;
+  transition: background .6s ease-in;
+  min-width: 300px;
+}
+
+input[type="submit"]:hover {
+  background: #A6D3D8;
+  color: #353D42;
+  cursor: pointer;
+  border: solid thin #353D42;
+}
+
+.admin-modal.hidden {
+  display: none;
+}
+
+.admin-modal {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.98);
+  color: #FFF;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  transition: display .6s ease-in;
+}
+
+
+
+.modal-spinner {
+  width: 100px;
+  height: 100px;
+
+  position: relative;
+  margin: 100px auto;
+}
+
+.double-bounce1, .double-bounce2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: pink;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+  0%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+
+.admin-tabs {
+  border-bottom: solid thin #353D42;
+  margin-bottom: 2rem;
+}
+.admin-tabs span.tab {
+  display: inline-block;
+  padding: .5rem 1rem;
+  margin-right: .75rem;
+  background: #A6D3D8;
+  width: 180px;
+  -webkit-border-top-left-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  -moz-border-radius-topright: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  text-align: center;
+  border-top: solid thin #353D42;
+  border-left: solid thin #353D42;
+  border-right: solid thin #353D42;
+  color: #353D42;
+  transition: background .6s ease-in;
+}
+
+.admin-tabs span.tab:hover {
+  cursor: pointer;
+  background: #353D42;
+  color: #A6D3D8;
+}
+
+.admin-tabs span.tab.active {
+  background: #353D42;
+  color: #A6D3D8;
+}
+
+.resync_button_wrapper {
+  padding: 1rem;
+  border: solid thin #353D42;
+  border-radius: 4px;
+  max-width: 600px;
+  background: #ccc;
+  margin-bottom: 2rem;
+}
+
+form#resync_job_feed input[type="submit"] {
+  font-size: 1rem;
+  background: #A6D3D8;
+  color: #353D42;
+  border: solid thin #353D42;
+  transition: all .6s ease-in-out;
+  min-width: 0px;
+}
+
+form#resync_job_feed input[type="submit"]:hover {
+  background: #353D42;
+  color: #A6D3D8;
+  cursor: pointer;
+}
+
+.wp_open_jobs {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #DACFB3;
+  border-radius: 4px;
+  max-width: 600px;
+}
+
+.wp_open_jobs .wp_open_jobs_list li {
+  border-bottom: solid thin #353D42;
+  margin-bottom: .5rem;
+}
+
+.wp_open_jobs .wp_open_jobs_list li span {
+  display: block;
+  margin: .5rem 0;
+  font-size: 1rem;
+}
+
+form.sync_job_data {
+  padding: .5rem 0;
+}
+
+form.sync_job_data input[type="submit"] {
+  font-size: .8rem;
+  background: #A6D3D8;
+  color: #353D42;
+  border: solid thin #353D42;
+  transition: all .6s ease-in-out;
+  min-width: 0px;
+}
+
+form.sync_job_data input[type="submit"]:hover {
+  background: #353D42;
+  color: #A6D3D8;
+  cursor: pointer;
+}
