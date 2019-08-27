@@ -89,7 +89,12 @@ $('input#resync_all_jobs').on('click', function(el) {
       data: formData,
     },
     success: function(response) {
-      console.log(response);
+      $('.resync_button_wrapper .messages').append(response);
+      $('.resync_button_wrapper .messages').slideDown("slow");
+      setTimeout(function() {
+        $('.resync_button_wrapper .messages').slideUp("slow").empty();
+        location.reload();
+      }, 5000)
     },
   });
 });
@@ -109,6 +114,7 @@ $('body').on('click', 'input.sync_job_submit', function(el){
       $('.wp_open_jobs .messages').slideDown("slow");
       setTimeout(function(){
         $('.wp_open_jobs .messages').slideUp("slow").empty();
+        location.reload();
       }, 5000);
     }
   })

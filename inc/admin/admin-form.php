@@ -111,13 +111,14 @@ class TwJobFeedAdmin {
     <div class="jobs">
       <div class="resync_button_wrapper">
         <h3>Update All Jobs in WordPress Database</h3>
+        <div class="messages" style="display: none;"></div>
         <p class="warning">
           This will delete all jobs currently in your WordPress database and replace them with all jobs currently in your Jazz HR Job Feed.
         </p>
         <form id="resync_job_feed">
           <input type="hidden" name="job_feed_url" value="<?php echo $job_feed_url; ?>" />
           <input type="hidden" name="job_feed_post_type_slug" value="<?php echo $job_feed_post_type_slug; ?>" />
-          <input type="submit" id="resync_all_jobs" value="Resync Jazz HR Job Feed" />
+          <input type="submit" id="resync_all_jobs" value="Update All Jobs In Database" />
         </form>
       </div>
       <hr>
@@ -427,12 +428,10 @@ class TwJobFeedAdmin {
 
     $delete_post_meta = $wpdb->query("DELETE from wp_postmeta WHERE meta_key = '$post_meta_key'");
 
-    var_dump($delete_post_meta);
-
     $delete_jop_posts = $wpdb->query("DELETE from wp_posts WHERE post_type = '$job_feed_post_type_slug'");
 
-    var_dump($delete_job_posts);
-
+    echo "<h4>All jobs in the database have been updated with current data from Jazz HR.</h4><p>Any older job posts in the WordPress database that are not in the Jazz HR Job Feed have been deleted.</p>";
+    exit;
   }
 
 }
