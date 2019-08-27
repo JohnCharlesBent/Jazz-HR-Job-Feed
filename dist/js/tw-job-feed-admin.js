@@ -10,7 +10,6 @@ function getJobFeeds() {
       action: 'refresh_job_feeds',
     },
     success: function(response) {
-      console.log(response);
       modal.removeClass('hidden');
       $('.refresh_job_feeds .jobs .wp_open_jobs_list').empty();
       $('.refresh_job_feeds .jobs .wp_open_jobs_list').append(response);
@@ -74,5 +73,44 @@ $('.admin-tabs span.tab').on('click', function() {
     default:
 
   }
+
+});
+
+$('input#resync_all_jobs').on('click', function(el) {
+  el.preventDefault();
+  var form = $('form#resync_job_feed');
+  var formData = form.serializeArray();
+
+  $.ajax({
+    type: 'POST',
+    url: ajaxUrl,
+    data: {
+      action: 'update_all',
+      data: formData,
+    },
+    success: function(response) {
+      console.log(response);
+    },
+  });
+});
+
+$('body').on('click', 'input.sync_job_submit', function(el){
+  el.preventDefault();
+  var formData = $(this).parent('form').serializeArray();
+  $.ajax({
+    type: 'POST',
+    url: ajaxUrl,
+    data: {
+      action: 'update_job',
+      data: formData,
+    },
+    success: function(response) {
+      $('.wp_open_jobs .messages').append(response);
+      $('.wp_open_jobs .messages').slideDown("slow");
+      setTimeout(function(){
+        $('.wp_open_jobs .messages').slideUp("slow").empty();
+      }, 5000);
+    }
+  })
 
 });

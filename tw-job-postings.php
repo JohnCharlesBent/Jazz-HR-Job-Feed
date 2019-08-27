@@ -47,4 +47,4 @@ include('inc/admin/admin-form.php');
 * Instantiate plugin classes
 **/
 $admin = new TwJobFeedAdmin;
-echo $admin->tw_get_jazz_hr_job_feed();
+//echo $admin->tw_get_jazz_hr_job_feed();

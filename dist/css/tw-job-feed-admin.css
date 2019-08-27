@@ -222,3 +222,30 @@ form.sync_job_data input[type="submit"]:hover {
   color: #A6D3D8;
   cursor: pointer;
 }
+
+form.sync_job_data a.edit_post_link {
+  text-decoration: none;
+  padding: .5rem 1rem;
+  width: auto;
+  display: inline-block;
+  background: #353D42;
+  border: solid thin transparent;
+  color: #A6D3D8;
+  margin-left: .5rem;
+  border-radius: 4px;
+  transition: all .6s ease-in-out;
+}
+
+form.sync_job_data a.edit_post_link:hover {
+  background:  #A6D3D8;
+  color: #353D42;
+  border: solid thin #353D42;
+  cursor: pointer;
+}
+
+.wp_open_jobs .messages {
+  padding: .5rem;
+  background: #A6D3D8;
+  color: #353D42;
+  border-radius: 4px;
+}

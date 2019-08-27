@@ -19,6 +19,10 @@ class TwJobFeedAdmin {
     add_action('wp_ajax_refresh_job_feeds', [$this,'tw_refresh_jazz_hr_job_feed_ajax']);
     // call the get job feed function during init actions...
     add_action('init', [$this, 'tw_get_jazz_hr_job_feed']);
+    // ajax function to update job data for one job in database
+    add_action('wp_ajax_update_job', [$this, 'tw_update_job_information']);
+    // ajax function to delete delete all open jobs posts then add all jobs from JAZZ HR feed
+    add_action('wp_ajax_update_all', [$this, 'tw_update_all_jobs']);
   }
   // enqueue scripts and styles for the admin pages
   public function tw_job_feed_scripts( $hook ) {
@@ -43,6 +47,7 @@ class TwJobFeedAdmin {
   public function tw_admin_setup_page() {
     global $wpdb;
     $form;
+    $submit_value = 'Submit';
     $prefix = $wpdb->prefix;
     $table = $prefix.'tw_job_feed_urls';
     // check database to see if the job feed table already has a feed
@@ -54,11 +59,12 @@ class TwJobFeedAdmin {
       $job_feed_slug = $sql[0]->job_feed_slug;
       $job_feed_url = $sql[0]->job_feed_url;
       $job_feed_post_type_slug = $sql[0]->job_feed_post_type_slug;
+      $submit_value = 'Update Account Data';
     }
 
     ?>
     <div class="tw-job-feed-admin__wrapper">
-      <h1 class="tw-title">Jazz HR Job Feeds</h1>
+      <h1 class="tw-title">Jazz HR Job Feed</h1>
       <hr>
 
 
@@ -95,7 +101,7 @@ class TwJobFeedAdmin {
           </label>
       </fieldset>
       <fieldset>
-        <input type="submit" value="submit" id="job-feed-submit"/>
+        <input type="submit" value="<?php echo $submit_value; ?>" id="job-feed-submit"/>
       </fieldset>
     </form>
     </div><!-- end .form_wrapper -->
@@ -117,6 +123,7 @@ class TwJobFeedAdmin {
       <hr>
       <div class="wp_open_jobs">
         <h3>Jobs Currently in WordPress Database</h3>
+        <div class="messages" style="display: none;"></div>
         <p>Update Open Jobs currently in your WordPress database with current data from your Jazz HR Job Feed.</p>
         <ul class="wp_open_jobs_list">
         </ul>
@@ -313,6 +320,7 @@ class TwJobFeedAdmin {
 
         $wp_job_title = $get_wp_open_jobs[0]->post_title;
         $wp_post_id = $get_wp_open_jobs[0]->ID;
+        $post_edit_link = get_edit_post_link($wp_post_id);
 
         $current_open_jobs_posts .= '<li class="open_job_post">'.
                                       '<span class="title">Title: <strong>'.$wp_job_title.'</strong></span> <span class="jazz_job_id">Jazz HR Job Id: <strong>'.$id.'</strong></span>'.
@@ -321,13 +329,110 @@ class TwJobFeedAdmin {
                                         '<input type="hidden" name="post_title" value="'.$wp_job_title.'" />'.
                                         '<input type="hidden" name="jazz_job_feed" value="'.$feed_url.'" />'.
                                         '<input type="hidden" name="jobs_post_type" value="'.$jobs_post_type.'" />'.
-                                        '<input id="sync_job_submit" type="submit" value="Update This Job" />'.
+                                        '<input type="hidden" name="job_id" value="'.$id.'" />'.
+                                        '<input class="sync_job_submit" type="submit" value="Update This Job" />'.
+                                        '<a class="edit_post_link" href="'.$post_edit_link.'">View WordPress Job Post</a>'.
                                       '</form>'.
                                     '</li>';
       }
     }
     echo $current_open_jobs_posts;
     exit;
+  }
+
+  public function tw_update_job_information() {
+    global $wpdb;
+    $prefix = $wpdb->prefix;
+
+    $data = $_POST;
+
+    $post_id = $data['data'][0]['value'];
+    $jazz_job_feed = $data['data'][2]['value'];
+    $jobs_post_type_slug = $data[3]['value'];
+    $job_id = $data['data'][4]['value'];
+
+    $xml = file_get_contents($jazz_job_feed);
+    $domDoc = new domDocument('1.0', 'utf-8');
+    $job_data = array();
+
+    if($domDoc->loadXML($xml)) {
+      $items = $domDoc->getElementsByTagName('job');
+      foreach($items as $item) {
+        if($item->childNodes->length) {
+          $job_id_number = $item->getElementsByTagName('id');
+          foreach($job_id_number as $j_id) {
+              if($j_id->nodeValue == $job_id) {
+                foreach($item->childNodes as $i) {
+                  $job_info[$i->nodeName] = $i->nodeValue;
+                }
+              }
+            }
+          }
+        }
+        $job_data[] = $job_info;
+      }
+      $data = date('Y-m-d H:i:s');
+
+      foreach($job_data as $j) {
+        $title = $j['title'];
+        $title_slug = str_replace(' ', '-', $title);
+        $title_slug = str_replace(',', '', $title);
+        $title_slug = strtolower($title_slug);
+        $content = $j['description'];
+
+        $new_post_data = array(
+          'ID' => $post_id,
+          'post_title' => $title,
+          'post_name' => $title_slug,
+          'post_content' => $content,
+        );
+        $update_post = wp_update_post($new_post_data);
+
+        $post_meta = array(
+          'jobid' => $j['id'],
+          'Status' => $j['status'],
+          'Department' => $j['department'],
+          'City'  => $j['city'],
+          'State' => $j['state'],
+          'Country' => $j['country'],
+          'Postal Code' => $j['postalcode'],
+          'Type'  => 'whatever',
+          'Experience'  => $j['experience'],
+          'Button'  => $j['buttons'],
+        );
+
+        $update_post_meta = update_post_meta($post_id, 'job_info', $post_meta);
+
+        if($update_post != 0) {
+          echo '<h4><i>'.$job_id.' | '.$title.'</i> has been updated with new data from Jazz HR.</h4>';
+          exit;
+        } else {
+          echo '<h4><i>'.$job_id.' | '.$title.'</i> was not updated.</h4><p>Either there was no new data and the post was not modified or an error occurred. Please contact your site administrator for more information.</p>';
+          exit;
+        }
+      }
+
+    }
+
+  // delete all jobs in WordPress database
+  public function tw_update_all_jobs() {
+    global $wpdb;
+    $prefix = $wpdb->prefix;
+
+    $data = $_POST;
+
+    $job_feed_url = $data['data'][0]['value'];
+    $job_feed_post_type_slug = $data['data'][1]['value'];
+    $post_meta_key = 'job_info';
+
+    $delete_post_meta = $wpdb->query("DELETE from wp_postmeta WHERE meta_key = '$post_meta_key'");
+
+    var_dump($delete_post_meta);
+
+    $delete_jop_posts = $wpdb->query("DELETE from wp_posts WHERE post_type = '$job_feed_post_type_slug'");
+
+    var_dump($delete_job_posts);
+
   }
 
 }
