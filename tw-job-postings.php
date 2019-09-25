@@ -37,14 +37,23 @@ function tw_job_posting_install() {
 register_activation_hook(__FILE__, 'tw_job_posting_install');
 
 /**
-* load required files for admin and display functions
+* load required files for admin functions
 **/
 include('inc/admin/admin-form.php');
 
-
-
 /**
-* Instantiate plugin classes
+* Instantiate plugin admin classes
 **/
 $admin = new TwJobFeedAdmin;
 //echo $admin->tw_get_jazz_hr_job_feed();
+
+/**
+* load required files for display functions
+**/
+include('inc/display/job-feed-display.php');
+
+/**
+* Instantiate plugin display classes
+**/
+
+$display = new TwJobFeedDisplay;
