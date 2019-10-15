@@ -5,9 +5,12 @@
 
 1. [Admin Functions](#admin)
   - Admin area
-  -
+  - Admin function definitions
 2. [Display Functions](#display)
+  - Shortcode information
+  - Function definitions
 3. [Cron Job Functions](#cron)
+  - Function definitions
 ---
 
 ### Admin Functions <a name="admin"></a>
