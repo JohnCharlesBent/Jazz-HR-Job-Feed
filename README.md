@@ -80,7 +80,7 @@ If the XML feed has failed and you are seeing jobs published to and pulled from 
 
 #### *Notes*
 
-The shortcode does not currently take any attributes as arguments. If you wanted to extend the display functionality of the shortcode you could certainly modify the **TwDisplayJobs** function to use attributes to modify the display or provide an option to display the data direct from the XML feed or from the WP database. You could also use an attribute to pull data from one or more job feeds using the **job_feed_slug** column as a shortcode attribute.   
+The shortcode does not currently take any attributes as arguments. If you wanted to extend the display functionality of the plugin you could certainly modify the **TwDisplayJobs** function to use attributes to modify the display or provide an option to display the data direct from the XML feed or from the WP database. You could also use an attribute to pull data from one or more job feeds using the **job_feed_slug** column as a shortcode attribute.   
 
 ---
 
