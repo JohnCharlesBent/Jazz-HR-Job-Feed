@@ -42,7 +42,7 @@ register_activation_hook(__FILE__, 'tw_job_posting_install');
 include('inc/admin/admin-form.php');
 
 /**
-* Instantiate plugin admin classes
+* Instantiate plugin admin class
 **/
 $admin = new TwJobFeedAdmin;
 //echo $admin->tw_get_jazz_hr_job_feed();
@@ -53,7 +53,7 @@ $admin = new TwJobFeedAdmin;
 include('inc/display/job-feed-display.php');
 
 /**
-* Instantiate plugin display classes
+* Instantiate plugin display class
 **/
 
 $display = new TwJobFeedDisplay;

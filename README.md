@@ -11,6 +11,7 @@
   - Function definitions
 3. [Cron Job Functions](#cron)
   - Function definitions
+4. [To Do](#to-do)
 ---
 
 ### Admin Functions <a name="admin"></a>
@@ -43,19 +44,25 @@ At the top of the "Refresh..." section is an option to "Update All Jobs In Datab
 Below that you can update the job data for each individual job saved to the selected post type.
 
 #### *Notes*
----
-The plugin looks for new jobs and pulls them in whenever the WordPress 'init' hook is fired. The init hook runs after WordPress has finished loading but before headers are sent, so the plugin is scanning for jobs and adding them whenever a WordPress page on the site is loaded. The function that reads the job feed is named ```tw_get_jazz_hr_job_feed()``` and can be found on line 184 of the file ```inc/admin/admin-form.php```.  
 
-Currently this function does not check the jobs published to the WP post type to see if that job is still in the job feed. It only looks for any jobs in the XML job feed that is not currently in the wp_posts database table.   
+The plugin looks for new jobs and pulls them in whenever the WordPress 'init' hook is fired so the plugin is scanning for jobs and adding them whenever a WordPress page on the site is loaded. The function that reads the job feed and adds jobs to the database is named ```tw_get_jazz_hr_job_feed()``` and can be found on line 184 of the file ```inc/admin/admin-form.php```.  
 
----
+Currently this function does not check the jobs published to the WP database to see if that job is still in the job feed. It only looks for any jobs in the XML job feed that is not currently in the wp_posts database table.   
+
 ### Display Functions <a href="#display"></a>
 ---
 
-Currently the display of jobs pulled from the XML job feed is done with a bit of shortcode.  
-That shortcode, and the output of the job feed, is handled by the function ```TwDisplayJobs()``` found on line 16 of the file ```inc/display/job-feed-display.php```.
+Currently the display of jobs pulled from the XML job feed is done with a bit of shortcode.
 
-This function displays the data from the XML job feed directly. If, for some reason, the script can't connect to or parse the XML feed the script will then revert to displaying jobs published to wp_posts database.  
+That shortcode looks like this:
+
+```
+[JobFeed][/JobFeed]
+```
+
+The output of the job feed is handled by the function ```TwDisplayJobs()``` found on line 16 of the file ```inc/display/job-feed-display.php```.
+
+This function pulls data from the XML job feed directly into the page . If, for some reason, the script can't connect to or parse the XML feed the script will then revert to displaying jobs published to wp_posts database.  
 
 You can verify which source is feeding the list of open jobs by checking the HTML of the web page for an html comment.  
 
@@ -70,3 +77,19 @@ If the XML feed has failed and you are seeing jobs published to and pulled from 
 ```
 <!-- this job feed was returned from jobs saved to the Open Jobs post type. If you are seeing this message then there was an issue parsing the XML feed and the Open Job posts are being displayed as a fallback... -->
 ```
+
+#### *Notes*
+
+The shortcode does not currently take any attributes as arguments. If you wanted to extend the display functionality of the shortcode you could certainly modify the **TwDisplayJobs** function to use attributes to modify the display or provide an option to display the data direct from the XML feed or from the WP database. You could also use an attribute to pull data from one or more job feeds using the **job_feed_slug** column as a shortcode attribute.   
+
+---
+
+## Cron Functions <a href="#cron"></a>
+
+---
+
+The cron directory holds a script that can be run as a scheduled task from a remote server or, with some modifications, from the WordPress site using wp_cron.
+
+Currently the script just runs a check for jobs in the XML feed. If the wp_posts table has a job that *is not in the XML feed* then the job data is deleted from the WP database.  If the job feed has a job that is in the job feed but *not in the database* then that job is added.  
+
+This script is not currently being run as a cron job. This script exists merely as an option if a site owner wants an automated means of clearing out old jobs and adding new ones to the database.  If the site is using the display shortcode with the XML being directly pulled into the page then this cron script is largely superfluous.  

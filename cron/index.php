@@ -46,6 +46,19 @@ if( !empty($wp_load) && file_exists( $wp_load ) ) {
     }
   }
 
+  foreach($current_job_feed as $current) {
+    $job_id = $current[0];
+
+    $get_meta = $wpdb->get_results($wpdb->prepare("SELECT meta_value from $wpdb->postmeta WHERE meta_key = 'job_info'"));
+
+    $meta_job_id = $get_meta->jobid;
+
+    foreach($get_meta as $meta) {
+      var_dump($meta);
+    }
+
+  }
+
   // loop through $jobs array, check to see if WP database already has job post, if not add job to open jobs CPT
   foreach($jobs as $job) {
     $id = $job['id'];
@@ -81,7 +94,7 @@ if( !empty($wp_load) && file_exists( $wp_load ) ) {
         'Type'  => $job['type'],
         'Experience'  => $job['experience'],
         'Button'  => $job['buttons'],
-      )
+      );
     }
 
   }
