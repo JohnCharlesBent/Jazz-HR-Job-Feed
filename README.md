@@ -3,11 +3,11 @@
 ## Table of contents
 ---
 
-1. [Admin Functions](#admin)
+1. [Admin](#admin)
 
-2. [Display Functions](#display)
+2. [Display](#display)
 
-3. [Cron Job Functions](#cron)
+3. [Cron Job](#cron)
 
 4. [To Do](#to-do)
 ---
