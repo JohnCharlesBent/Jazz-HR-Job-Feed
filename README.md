@@ -90,6 +90,6 @@ The shortcode does not currently take any attributes as arguments. If you wanted
 
 The cron directory holds a script that can be run as a scheduled task from a remote server or, with some modifications, from the WordPress site using wp_cron.
 
-Currently the script just runs a check for jobs in the XML feed. If the wp_posts table has a job that *is not in the XML feed* then the job data is deleted from the WP database.  If the job feed has a job that is in the job feed but *not in the database* then that job is added.  
+Currently the script just runs a check for jobs in the XML feed. If the wp_posts table has a job that *is not in the XML feed* then the job data is deleted from the WP database.  If the job feed has a job that is in the job feed but *not in the database* then that job is added. The script includes an email option that can send an email to an account with the status of the cron job when it is run.
 
-This script is not currently being run as a cron job. This script exists merely as an option if a site owner wants an automated means of clearing out old jobs and adding new ones to the database.  If the site is using the display shortcode with the XML being directly pulled into the page then this cron script is largely superfluous.  
+Currently this script is not being run as a cron job for any site Tiz Inc. supports. This script exists merely as an option if a site owner wants an automated means of clearing out old jobs and adding new ones to the database.  If the site is using the display shortcode with the XML being directly pulled into the page then this cron script is largely superfluous.  
