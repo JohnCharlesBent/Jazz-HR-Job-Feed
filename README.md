@@ -4,18 +4,17 @@
 ---
 
 1. [Admin Functions](#admin)
-  - Admin area
-  - Function definitions
+
 2. [Display Functions](#display)
-  - Shortcode information
-  - Function definitions
+
 3. [Cron Job Functions](#cron)
+
 4. [To Do](#to-do)
 ---
 
 ## Admin Area <a name="admin"></a>
 
-When the TW Job Feed plugin is installed and activated it creates a database table called "*prefix*_tw_job_feed_urls" where *prefix* is the wp prefix being used forn the WordPress database.  
+When the TW Job Feed plugin is installed and activated it creates a database table called "*prefix*_tw_job_feed_urls" where *prefix* is the wp prefix being used for the WordPress database.  
 
 This table has three columns:
 - **job_feed_slug**
@@ -36,7 +35,7 @@ If the plugin database table already has a value for the Jazz HR Job Feed URL th
 
 Once a Job Feed URL is provided the plugin will start publishing jobs from the XML feed to the post type provided in the admin form.  
 
-To manually clear jobs out of the post type that are old or no longer relevant click the tab at the top of the admin page that reads "Refresh Open Jobs".
+To manually clear jobs out of the database that are old or no longer relevant click the tab at the top of the admin page that reads "Refresh Open Jobs".
 
 At the top of the "Refresh..." section is an option to "Update All Jobs In Database". Clicking this button will delete any jobs published to the post type and then rescan the XML job feed to publish a fresh batch of jobs. You can also set a cron job to perform the same task. The cron script can be found in the ``` cron/ ``` directory.
 
@@ -89,7 +88,7 @@ Function used to refresh jobs in database when the "Update All Jobs In Database"
 
 
 
-## Display Functions <a href="#display"></a>
+## Display Functions <a name="#display"></a>
 ---
 
 Currently the display of jobs pulled from the XML job feed is done with a bit of short code.
@@ -130,7 +129,7 @@ Reads the JAZZ HR Job Feed XML and generates HTML to display Job data via short 
 
 ---
 
-## Cron Functions <a href="#cron"></a>
+## Cron Functions <a name="#cron"></a>
 
 ---
 
@@ -138,4 +137,17 @@ The cron directory holds a script that can be run as a scheduled task from a rem
 
 Currently the script just runs a check for jobs in the XML feed. If the wp_posts table has a job that *is not in the XML feed* then the job data is deleted from the WP database.  If the job feed has a job that is in the job feed but *not in the database* then that job is added. The script includes an email option that can send an email to an account with the status of the cron job when it is run.
 
-Currently this script is not being run as a cron job for any site Tiz Inc. supports. This script exists merely as an option if a site owner wants an automated means of clearing out old jobs and adding new ones to the database.  If the site is using the display short code with the XML being directly pulled into the page then this cron script is largely superfluous.  
+Currently this script is not being run as a cron job for any site Tiz Inc. supports. This script exists merely as an option if a site owner wants an automated means of clearing out old jobs and adding new ones to the database.  If the site is using the display short code with the XML being directly pulled into the page then this cron script is largely superfluous.
+
+## To Do <a name="#to-do"></a>
+---
+
+The following are some options that could be considered if you wanted to extend the functionality of this plugin...
+
+- Modify JAZZ HR Feed Information form to allow adding multiple XML job feeds.
+
+- Add "Delete This Job" button to the "Jobs Currently In Database section" / tie button click to an AJAX function that deletes the WP post and post meta for that job.
+
+- Modify short code to accept attributes allowing for either display of data directly from the XML feed or jobs saved to the WordPress database.
+
+- Modify short code to merge data from two or more job feeds together.  
